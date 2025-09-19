@@ -1,0 +1,10 @@
+go 1.22.2
+
+use (
+	./DivYCon
+	./principal
+	./tdas
+	./typos
+	./typos/cola
+	./typos/pila
+)

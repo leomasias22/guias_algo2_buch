@@ -1,0 +1,55 @@
+------------------(1) MergeSort con 3 divisiones------------------
+Análisis:
+
+División: El arreglo se divide en 3 partes de tamaño n/3
+Conquista: 3 llamadas recursivas sobre arreglos de tamaño n/3
+Combinación: Merge de 3 partes en tiempo lineal O(n)
+
+Recurrencia:
+T(n) = 3T(n/3) + O(n)
+Aplicando Teorema Maestro:
+
+a = 3, b = 3, c = 1 (ya que f(n) = O(n) = n¹)
+LogB(a) = log_3(3) = 1
+Comparación: c = 1 = 1 → Caso 2
+
+Complejidad: T(n) = O(n log n)
+
+------------------(2) MergeSort con n divisiones------------------
+Análisis:
+
+División: El arreglo se divide en n partes de tamaño 1
+Conquista: n llamadas recursivas sobre arreglos de tamaño 1
+Combinación: Merge de n partes
+
+Recurrencia:
+T(n) = nT(1) + f(n)
+Pero T(1) = O(1), entonces: T(n) = n·O(1) + f(n) = O(n) + f(n)
+¿A qué algoritmo se asemeja?
+Se asemeja a SelectionSort o cualquier algoritmo de ordenamiento por comparación simple.
+Si el merge de n elementos individuales se hace de forma ingenua (comparando todos), sería O(n²). Si se hace de forma eficiente usando una estructura auxiliar, sería O(n log n), pero perdería el sentido de la división recursiva.
+Complejidad típica: O(n²)
+
+------------------(3) ¿Tiene sentido MergeSort con k > 2?------------------
+Análisis General para k divisiones:
+T(n) = kT(n/k) + O(n)
+Aplicando Teorema Maestro:
+
+a = k, b = k, c = 1
+LogB(a) = logK(k) = 1
+Comparación: c = 1 = 1 → Caso 2
+
+Para cualquier k: T(n) = O(n log n)
+Respuesta: NO tiene sentido para k > 2
+Razones:
+
+Misma complejidad asintótica: Siempre O(n log n)
+Mayor overhead práctico:
+
+Más llamadas recursivas simultáneas
+Merge más complejo (combinar k partes vs 2)
+Mayor uso de memoria
+
+
+------------------Conclusión------------------
+ El MergeSort tradicional con k=2 es la implementación más práctica y eficiente.

@@ -1,0 +1,50 @@
+------------------Algoritmo A------------------
+
+Divide en 5 subproblemas de tamaño n/2
+Combinación en tiempo lineal O(n)
+Recurrencia: T(n) = 5T(n/2) + O(n)
+
+Aplicando el Teorema Maestro:
+
+T(n) = 5T(n/2) + n
+a = 5, b = 2, f(n) = n¹ → c = 1
+LogB(a) = log2(5) ≈ 2.32
+Comparación: c = 1 < 2.32 → Caso 1
+Complejidad: O(n^2.32)
+
+------------------Algoritmo B------------------
+
+Divide en 9 subproblemas de tamaño n/3
+Combinación en tiempo cuadrático O(n²)
+Recurrencia: T(n) = 9T(n/3) + O(n²)
+
+Aplicando el Teorema Maestro:
+
+T(n) = 9T(n/3) + n²
+a = 9, b = 3, f(n) = n² → c = 2
+LogB(a) = log3(9) = 2
+Comparación: c = 2 = 2 → Caso 2
+Complejidad: O(n² log n)
+
+------------------Algoritmo C------------------
+
+Reduce el problema en 1 elemento cada vez
+Trabajo por nivel: O(n)
+Recurrencia: T(n) = T(n-1) + O(n)
+
+Esta es una recurrencia aritmética:
+
+T(n) = O(n) + O(n-1) + O(n-2) + ... + O(1)
+T(n) = O(n + (n-1) + (n-2) + ... + 1) = O(n(n+1)/2)
+Complejidad: O(n²)
+
+------------------Comparación y Elección------------------
+
+Ordenando de mejor a peor complejidad:
+
+Algoritmo C: O(n²) 
+Algoritmo B: O(n² log n)
+Algoritmo A: O(n^2.32)
+
+Elegiría el Algoritmo C porque tiene la mejor complejidad temporal O(n²). Aunque puede parecer menos sofisticado por su naturaleza iterativa (reduce un elemento por vez), es asintóticamente más eficiente que los otros dos algoritmos.
+El factor logarítmico adicional en B y el exponente mayor en A hacen que para valores grandes de n, el algoritmo C sea significativamente más rápido.

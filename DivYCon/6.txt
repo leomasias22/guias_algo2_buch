@@ -1,0 +1,20 @@
+T(n) = 2T(2n/3) + √n
+Aplicando el Teorema Maestro:
+
+a = 2 (número de subproblemas)
+b = 2/3--->3/2(se invierte)
+f(n)=√n  →  c=1/2
+
+Calculando n^(logB​(A)):
+
+logB​(A) = log(3/2) 2 = ln(2)/ln(3/2) = ln(2)/ln(1.5) ≈ 1.71
+
+Por lo tanto: n^(log(3/2) 2) ≈ n^1.71
+
+Ahora comparo c = √n = n^0.5 con n^1.71:
+
+Como n^0.5 < n^1.71, osea logB​(A)>C caso 3 de teorema maestro
+
+Según el Caso 1 del Teorema Maestro:
+T(n) = Θ(n^(log(3/2) 2)) = Θ(n^1.71)
+La complejidad del algoritmo es aproximadamente Θ(n^1.71).
