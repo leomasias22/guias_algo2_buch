@@ -4,10 +4,7 @@ import "ejemplo.com/guias/typos/pila"
 
 func OrdenarPila(p pila.Pila[int]) {
 	// Ordena una pila de enteros en orden ascendente usando solo una pila auxiliar.
-	// Utiliza únicamente las operaciones: Apilar, Desapilar, VerTope, EstaVacia, CrearPila
-	//
-	// Complejidad temporal: O(n²)
-	// Complejidad espacial: O(n)
+	// Complejidad : O(n²)
 
 	pilaAuxiliar := pila.CrearPilaDinamica[int]()
 
@@ -17,7 +14,8 @@ func OrdenarPila(p pila.Pila[int]) {
 
 		// Mover elementos mayores de la pila auxiliar a la original
 		for !pilaAuxiliar.EstaVacia() && pilaAuxiliar.VerTope() > elementoActual {
-			p.Apilar(pilaAuxiliar.Desapilar())
+			mayor := pilaAuxiliar.Desapilar()
+			p.Apilar(mayor)
 		}
 
 		// Insertar el elemento actual en su posición correcta
@@ -26,6 +24,8 @@ func OrdenarPila(p pila.Pila[int]) {
 
 	// Transferir todos los elementos ordenados de vuelta a la pila original
 	for !pilaAuxiliar.EstaVacia() {
-		p.Apilar(pilaAuxiliar.Desapilar())
+		elemento := pilaAuxiliar.Desapilar()
+		p.Apilar(elemento)
+
 	}
 }

@@ -3,7 +3,7 @@ Aplicando el Teorema Maestro:
 
 a = 2 (número de subproblemas)
 b = 2/3--->3/2(se invierte)
-f(n)=√n  →  c=1/2
+O(n^C)=√n  →  c=1/2
 
 Calculando n^(logB​(A)):
 

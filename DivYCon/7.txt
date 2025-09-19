@@ -7,7 +7,7 @@ Recurrencia: T(n) = 5T(n/2) + O(n)
 Aplicando el Teorema Maestro:
 
 T(n) = 5T(n/2) + n
-a = 5, b = 2, f(n) = n¹ → c = 1
+a = 5, b = 2, O(n^C) = n¹ → c = 1
 LogB(a) = log2(5) ≈ 2.32
 Comparación: c = 1 < 2.32 → Caso 1
 Complejidad: O(n^2.32)
@@ -21,7 +21,7 @@ Recurrencia: T(n) = 9T(n/3) + O(n²)
 Aplicando el Teorema Maestro:
 
 T(n) = 9T(n/3) + n²
-a = 9, b = 3, f(n) = n² → c = 2
+a = 9, b = 3, O(n^C) = n² → c = 2
 LogB(a) = log3(9) = 2
 Comparación: c = 2 = 2 → Caso 2
 Complejidad: O(n² log n)

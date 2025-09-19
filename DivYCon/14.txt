@@ -9,7 +9,7 @@ Recurrencia:
 T(n) = 3T(n/3) + O(n)
 Aplicando Teorema Maestro:
 
-a = 3, b = 3, c = 1 (ya que f(n) = O(n) = n¹)
+a = 3, b = 3, c = 1 (ya que O(n^C) = O(n) = n¹)
 LogB(a) = log_3(3) = 1
 Comparación: c = 1 = 1 → Caso 2
 
@@ -23,8 +23,8 @@ Conquista: n llamadas recursivas sobre arreglos de tamaño 1
 Combinación: Merge de n partes
 
 Recurrencia:
-T(n) = nT(1) + f(n)
-Pero T(1) = O(1), entonces: T(n) = n·O(1) + f(n) = O(n) + f(n)
+T(n) = nT(1) + O(n^C)
+Pero T(1) = O(1), entonces: T(n) = n·O(1) + O(n^C) = O(n) + O(n^C)
 ¿A qué algoritmo se asemeja?
 Se asemeja a SelectionSort o cualquier algoritmo de ordenamiento por comparación simple.
 Si el merge de n elementos individuales se hace de forma ingenua (comparando todos), sería O(n²). Si se hace de forma eficiente usando una estructura auxiliar, sería O(n log n), pero perdería el sentido de la división recursiva.

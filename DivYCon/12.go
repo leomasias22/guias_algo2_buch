@@ -29,7 +29,7 @@ La recurrencia de este algoritmo es:
 T(n) = T(n/2) + O(1)
 
 Aplicando el Teorema Maestro:
-- a = 1, b = 2, c = 0 (ya que f(n) = O(1) = n^0)
+- a = 1, b = 2, c = 0 (ya que O(n^C) = O(1) = n^0)
 - LogB(a) = log_2(1) = 0
 - Comparación: c = 0 = 0 → Caso 2
 

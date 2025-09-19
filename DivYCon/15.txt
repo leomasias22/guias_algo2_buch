@@ -1,0 +1,40 @@
+----------------------------Planteo inicial----------------------------
+
+Se desea un algoritmo de **División y Conquista** que:  
+
+- Divida el problema en A subproblemas de tamaño n/4.  
+- Combine las soluciones en O(n^2).  
+
+La recurrencia que describe el tiempo de ejecución es:
+
+T(n) = A * T(n/4) + O(n^2)
+
+El algoritmo de Strassen tiene complejidad:
+
+O(n^(log2 7)) ≈ O(n^2.807)
+
+Se quiere que el nuevo algoritmo sea más rápido que Strassen, es decir, que tenga un exponente menor que 2.807.
+
+----------------------------Aplicando el Teorema Maestro----------------------------
+
+Para una recurrencia de la forma T(n) = A * T(n/4) + O(n^2), el Teorema Maestro indica que:
+
+T(n) = O(n^(log4 A))  si n^2 = O(n^(log4 A))
+
+Queremos que el exponente sea menor que el de Strassen:
+
+log4 A < log2 7
+
+Convertimos a la misma base:
+
+(log2 A)/2 < log2 7
+
+log2 A < 2 * log2 7 = log2 49
+
+A < 49
+
+----------------------------Respuesta----------------------------
+
+El máximo número de subproblemas A que permite que el algoritmo sea más rápido que Strassen es:
+
+48
