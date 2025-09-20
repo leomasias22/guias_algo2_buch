@@ -1,0 +1,51 @@
+JUSTIFICACIÓN DE ALGORITMOS AUXILIARES - RADIX SORT
+
+¿POR QUÉ COUNTING SORT COMO ALGORITMO AUXILIAR?
+
+1. RANGO LIMITADO
+   - Todas las notas están en el rango [0-10]
+   - Solo 11 valores posibles (k=11)
+   - Counting Sort es óptimo para rangos pequeños
+   - Complejidad: O(n + k) = O(n + 11) = O(n)
+
+2. ESTABILIDAD REQUERIDA(por enunciado)
+   - Radix Sort NECESITA estabilidad para funcionar correctamente
+   - Counting Sort es estable por naturaleza
+
+3. EFICIENCIA
+   - Complejidad: O(n + k) por pasada
+   - Más eficiente que algoritmos de comparación O(n log n)
+   - No hay overhead de comparaciones
+   - Aprovecha completamente el rango limitado
+
+¿POR QUÉ NO OTROS ALGORITMOS AUXILIARES?
+
+ALGORITMOS NO ESTABLES (DESCARTADOS DE ENTRADA):
+
+QUICK SORT
+SELECTION SORT
+
+ALGORITMOS ESTABLES (MENOS EFICIENTES):
+
+INSERTION SORT:
+   - Complejidad: O(n²) en el peor caso
+   - Aunque es estable, es menos eficiente que Counting Sort
+   - Solo sería mejor para n muy pequeño (n < 10)
+   - Desperdicia la ventaja del rango limitado
+
+MERGE SORT:
+   - Complejidad: O(n log n)
+   - Es estable, pero innecesariamente complejo
+   - Desperdicia la ventaja del rango limitado [0-10]
+   - Requiere más espacio y operaciones
+
+BUBBLE SORT:
+   - Complejidad: O(n²) muy por encima de las demas(solo comparable con insertion en su peor caso)
+
+ANÁLISIS DE COMPLEJIDAD TOTAL:
+
+COMPLEJIDAD TEMPORAL:
+- Cálculo de promedios: O(n)
+- 4 pasadas de Counting Sort: 4 × O(n + k)
+- k = 11 (constante)
+- Complejidad final: O(4n + 4×11) = O(4n + 44) = O(n)

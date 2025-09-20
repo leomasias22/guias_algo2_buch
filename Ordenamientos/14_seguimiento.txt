@@ -1,0 +1,64 @@
+SEGUIMIENTO DEL EJEMPLO - RADIX SORT ALUMNOS
+
+Datos iniciales:
+Juan Pérez: 7,4,5 → suma=16 → promedio=5
+María Gómez: 5,7,4 → suma=16 → promedio=5  
+Germán González: 4,8,5 → suma=17 → promedio=5
+Elián Valenzuela: 4,2,0 → suma=6 → promedio=2
+Bobo Weghorst: 0,0,0 → suma=0 → promedio=0
+Hector Fernández: 8,9,10 → suma=27 → promedio=9
+Martina Giménez: 7,4,4 → suma=15 → promedio=5
+Mirtha Legrand: 10,8,10 → suma=28 → promedio=9
+Ricardo Bonafide: 4,6,8 → suma=18 → promedio=6
+
+PASO 1: Ordenar por Parcial 3 (menos significativo)
+Valores parcial 3: [5,4,5,0,0,10,4,10,8]
+Resultado después de counting sort:
+1. Elián Valenzuela: 4,2,0 (parcial3=0)
+2. Bobo Weghorst: 0,0,0 (parcial3=0)
+3. María Gómez: 5,7,4 (parcial3=4)
+4. Martina Giménez: 7,4,4 (parcial3=4)
+5. Juan Pérez: 7,4,5 (parcial3=5)
+6. Germán González: 4,8,5 (parcial3=5)
+7. Ricardo Bonafide: 4,6,8 (parcial3=8)
+8. Hector Fernández: 8,9,10 (parcial3=10)
+9. Mirtha Legrand: 10,8,10 (parcial3=10)
+
+PASO 2: Ordenar por Parcial 2 (estable)
+Valores parcial 2: [2,0,7,4,4,8,6,9,8]
+Resultado después de counting sort:
+1. Bobo Weghorst: 0,0,0 (parcial2=0)
+2. Elián Valenzuela: 4,2,0 (parcial2=2)
+3. María Gómez: 5,7,4 (parcial2=4) - mantiene orden por estabilidad
+4. Martina Giménez: 7,4,4 (parcial2=4)
+5. Juan Pérez: 7,4,5 (parcial2=4)
+6. Ricardo Bonafide: 4,6,8 (parcial2=6)
+7. Germán González: 4,8,5 (parcial2=8)
+8. Mirtha Legrand: 10,8,10 (parcial2=8)
+9. Hector Fernández: 8,9,10 (parcial2=9)
+
+PASO 3: Ordenar por Parcial 1 (estable)
+Valores parcial 1: [0,4,5,7,7,4,4,10,8]
+Resultado después de counting sort:
+1. Bobo Weghorst: 0,0,0 (parcial1=0)
+2. Elián Valenzuela: 4,2,0 (parcial1=4)
+3. Ricardo Bonafide: 4,6,8 (parcial1=4)
+4. Germán González: 4,8,5 (parcial1=4)
+5. María Gómez: 5,7,4 (parcial1=5)
+6. Juan Pérez: 7,4,5 (parcial1=7)
+7. Martina Giménez: 7,4,4 (parcial1=7)
+8. Hector Fernández: 8,9,10 (parcial1=8)
+9. Mirtha Legrand: 10,8,10 (parcial1=10)
+
+PASO 4: Ordenar por Promedio (más significativo)
+Valores promedio: [0,2,6,5,5,9,5,9,9]
+RESULTADO FINAL:
+1. Bobo Weghorst: 0,0,0 → promedio=0
+2. Elián Valenzuela: 4,2,0 → promedio=2
+3. Ricardo Bonafide: 4,6,8 → promedio=6
+4. Germán González: 4,8,5 → promedio=5
+5. María Gómez: 5,7,4 → promedio=5  
+6. Juan Pérez: 7,4,5 → promedio=5
+7. Martina Giménez: 7,4,4 → promedio=5
+8. Hector Fernández: 8,9,10 → promedio=9
+9. Mirtha Legrand: 10,8,10 → promedio=9

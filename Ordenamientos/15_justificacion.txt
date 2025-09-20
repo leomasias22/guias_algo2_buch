@@ -1,0 +1,73 @@
+\------------------------------ Análisis de Complejidad ------------------------------
+
+--------------------------- PASO 1: Separación inicial en grupos ---------------------------
+---------------------------
+for _, persona := range personas {
+    if persona.Edad <= 12 {
+        niños = append(niños, persona)
+    } else {
+        adultos = append(adultos, persona)
+    }
+}
+---------------------------
+Se recorre el arreglo completo de tamaño n.
+Cada iteración realiza un condicional O(1) y un append O(1).
+Complejidad: O(n).
+
+
+--------------------------- PASO 2: Ordenamiento de niños ---------------------------
+---------------------------
+if len(niños) > 0 {
+    CountingSort(niños, "edad")
+}
+---------------------------
+
+Counting Sort tiene complejidad O(n₁ + k₁), donde:
+
+  n₁ = número de niños.
+  k₁ = rango de edades posible (máx. 0–12 → 13 valores).
+ Como k₁ es constante, este paso se simplifica a O(n₁).
+
+--------------------------- PASO 3: Ordenamiento de adultos (doble Counting Sort) ---------------------------
+---------------------------
+---------------------------
+if len(adultos) > 0 {
+    CountingSort(adultos, "edad")         // Menos significativo
+    CountingSort(adultos, "nacionalidad") // Más significativo
+}
+---------------------------
+Primera llamada (edad):
+
+Complejidad: O(n₂ + k₂)
+
+  n₂ = número de adultos.
+  k₂ = rango de edades de adultos (aprox. hasta 100 valores).
+  Se simplifica a O(n₂) porque k₂ es constante.
+
+### Segunda llamada (nacionalidad):
+
+ Complejidad: O(n₂ + k₃)
+
+   k₃ = 32 valores posibles (enumerativo fijo).
+   Se simplifica también a O(n₂).
+
+Subtotal adultos:
+
+O(n₂ + k₂) + O(n₂ + k₃) = O(n₂)
+
+--------------------------- PASO 4: Concatenación final ---------------------------
+
+ Se copian los resultados de los niños y los adultos en el slice original.
+ Complejidad: O(n).
+
+--------------------------- Complejidad total ---------------------------
+
+* Paso 1: O(n)
+* Paso 2: O(n₁)
+* Paso 3: O(n₂)
+* Paso 4: O(n)
+
+Como n₁ + n₂ = n, la complejidad final es:
+
+T(n) = O(n)
+

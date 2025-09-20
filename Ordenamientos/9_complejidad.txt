@@ -1,0 +1,39 @@
+=================================================================
+COMPLEJIDAD TEMPORAL: O(n)
+=================================================================
+
+DESGLOSE DETALLADO:
+
+1. CONTEO SIMULTANEO:
+   para i := 0; i < n; i++ hacer
+     // operaciones constantes O(1)
+   fin para
+   → O(n)
+
+2. INDICES ACUMULATIVOS:
+   para i := 1; i < 10; i++ hacer
+     // operaciones constantes O(1)
+   fin para
+   → O(k) = O(10) = O(1)
+
+3. PASO 1 - ORDENAR POR EXPONENTE:
+   para i := n-1; i >= 0; i-- hacer
+     // operaciones constantes O(1)
+   fin para
+   → O(n)
+
+4. PASO 2 - ORDENAR POR CIFRA B:
+   - Resetear contador: O(k) = O(1)
+   - Recontar: O(n)
+   - Recalcular acumulativo: O(k) = O(1)
+   - Distribuir: O(n)
+   → O(n)
+
+5. PASO 3 - ORDENAR POR CIFRA A:
+   - Resetear contador: O(k) = O(1)
+   - Recontar: O(n)
+   - Recalcular acumulativo: O(k) = O(1)
+   - Distribuir: O(n)
+   → O(n)
+
+TOTAL: O(n) + O(1) + O(n) + O(n) + O(n) = O(4n + constantes) = O(n)

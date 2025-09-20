@@ -1,0 +1,34 @@
+
+Caso a
+ f(n) = O(1) - Constante
+Elementos desordenados: Constante (muy pocos)
+Estrategia: Insertion Sort
+
+Los elementos ya ordenados no se mueven
+Solo se insertan los pocos elementos desordenados
+Complejidad: O(n)
+Ecuacion: T(n) = n + c (donde c es constante)
+
+Caso b
+f(n) = O(log n) - Logaritmico
+Elementos desordenados: Pocos (logaritmicos)
+Estrategia Optima: DivYCon (Division y Conquista)
+
+Cada division opera sobre subsecciones casi ordenadas
+La operacion merge en datos ordenados es lineal
+Complejidad: O(n)
+Ecuacion: T(n) = n * log(n) / log(n) = n
+
+Alternativa: Insertion Sort
+
+Complejidad: O(n log n)
+Ecuacion: T(n) = n * log(n)
+
+Caso c
+ f(n) = O(√n) - Raiz cuadrada
+Elementos desordenados: Moderados
+Estrategia: Merge Sort
+
+Merge Sort mantiene O(n log n) independiente de distribucion
+Complejidad: O(n log n)
+Ecuacion: T(n) = n * log(n)

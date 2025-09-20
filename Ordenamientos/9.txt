@@ -1,0 +1,81 @@
+ALGORITMO OrdenarNotacionCientifica_Ultra(numeros)
+  n := len(numeros)
+  si n <= 1 entonces retornar numeros fin si
+  
+  // Contadores para los 3 dígitos simultáneamente
+  contA := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  // primera cifra (a)
+  contB := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  // segunda cifra (b)
+  contC := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  // exponente (c)
+  
+  para i := 0; i < n; i++ hacer
+    num := numeros[i]
+    a := num / 100
+    b := (num / 10) % 10
+    c := num % 10
+    
+    append(contA, a, contA[a] + 1)  // Incrementar contador de cifra a
+    append(contB, b, contB[b] + 1)  // Incrementar contador de cifra b
+    append(contC, c, contC[c] + 1)  // Incrementar contador de exponente c
+  fin para
+  
+  // Convertir contadores a índices acumulativos
+  para i := 1; i < 10; i++ hacer
+    contA[i] += contA[i-1]
+    contB[i] += contB[i-1] 
+    contC[i] += contC[i-1]
+  fin para
+  
+  // Arrays temporales para las 3 pasadas
+  temp1 := [n elementos]
+  temp2 := [n elementos]
+  
+  // *** PASO 1: Ordenar por exponente c (menos significativo) ***
+  para i := n-1; i >= 0; i-- hacer
+    c := numeros[i] % 10
+    temp1[contC[c]-1] = numeros[i]
+    append(contC, c, contC[c] - 1)  // Decrementar contador
+  fin para
+  
+  // *** PASO 2: Ordenar por cifra b (estable) ***
+  // Recalcular contador B basado en el orden actual
+  para i := 0; i < 10; i++ hacer
+    append(contB, i, 0)  // Resetear contador B
+  fin para
+  para i := 0; i < n; i++ hacer
+    b := (temp1[i] / 10) % 10
+    append(contB, b, contB[b] + 1)  // Incrementar contador
+  fin para
+  para i := 1; i < 10; i++ hacer
+    contB[i] += contB[i-1]
+  fin para
+  
+  para i := n-1; i >= 0; i-- hacer
+    b := (temp1[i] / 10) % 10
+    temp2[contB[b]-1] = temp1[i]
+    append(contB, b, contB[b] - 1)  // Decrementar contador
+  fin para
+  
+  // *** PASO 3: Ordenar por cifra a (más significativo) ***
+  // Recalcular contador A basado en el orden actual
+  para i := 0; i < 10; i++ hacer
+    append(contA, i, 0)  // Resetear contador A
+  fin para
+  para i := 0; i < n; i++ hacer
+    a := temp2[i] / 100
+    append(contA, a, contA[a] + 1)  // Incrementar contador
+  fin para
+  para i := 1; i < 10; i++ hacer
+    contA[i] += contA[i-1]
+  fin para
+  
+  // Resultado final directamente en el array original
+  para i := n-1; i >= 0; i-- hacer
+    a := temp2[i] / 100
+    numeros[contA[a]-1] = temp2[i]
+    append(contA, a, contA[a] - 1)  // Decrementar contador
+  fin para
+  
+  retornar numeros
+fin algoritmo
+
+

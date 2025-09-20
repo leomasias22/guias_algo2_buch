@@ -1,0 +1,36 @@
+--------------------------¿Puede aplicarse Counting Sort a floats entre 0 y 1?------------------------------
+NO, no puede aplicarse directamente.
+Razones:
+
+Entre 0 y 1 hay infinitos números reales posibles
+Counting Sort necesita un arreglo de conteo finito para cada valor posible
+Es imposible crear un arreglo para infinitos valores
+
+--------------------Algoritmo alternativo: RADIX SORT--------------------------------------------
+Radix Sort es la mejor alternativa porque:
+
+Complejidad O(d × (n + k)) donde d es número de dígitos
+Funciona con la representación binaria/decimal de los floats
+Más eficiente que Bucket Sort para este caso específico
+Complejidad predecible, no depende de la distribución
+
+-----------------------¿Es suficiente saber que el rango es [0,1]?--------------------------------
+Con Radix Sort necesitamos menos información:
+
+Precisión de los floats: Para determinar número de dígitos (d)
+Representación: Decimal o binaria
+
+NO necesitamos conocer la distribución de los datos (ventaja sobre Bucket Sort).
+Comparación:
+
+Radix Sort: O(d × (n + k)) - complejidad fija
+Bucket Sort: O(n) promedio, O(n²) peor caso - depende de distribución
+
+Complejidad de Radix Sort:
+
+Para floats de precisión p decimales: O(p × (n + 10))
+Generalmente más estable que Bucket Sort
+
+Conclusión:
+Counting Sort NO funciona con floats continuos. 
+Radix Sort es superior a Bucket Sort para este problema porque no requiere conocer la distribución de los datos y tiene complejidad predecible.
