@@ -1,0 +1,147 @@
+EJECUCION PASO A PASO DEL ALGORITMO ULTRA OPTIMIZADO
+
+DATOS DE ENTRADA:
+Array: [122, 369, 332, 180, 486, 349, 326, 101]
+Representan: [1,2*10^2, 3,6*10^9, 3,3*10^2, 1,8*10^0, 4,8*10^6, 3,4*10^9, 3,2*10^6, 1,0*10^1]
+n = 8
+
+PASO 1: CONTEO SIMULTANEO (una sola pasada)
+
+Extraemos los 3 digitos de cada numero:
+
+Numero  Notacion   a(cifra1)  b(cifra2)  c(exponente)
+122     1,2*10^2      1          2           2
+369     3,6*10^9      3          6           9
+332     3,3*10^2      3          3           2
+180     1,8*10^0      1          8           0
+486     4,8*10^6      4          8           6
+349     3,4*10^9      3          4           9
+326     3,2*10^6      3          2           6
+101     1,0*10^1      1          0           1
+
+CONTADORES DESPUES DEL CONTEO:
+contA = [0, 3, 0, 4, 1, 0, 0, 0, 0, 0]
+        posicion 1: 3 veces (122, 180, 101)
+        posicion 3: 4 veces (369, 332, 349, 326)
+        posicion 4: 1 vez (486)
+
+contB = [1, 0, 2, 1, 1, 0, 1, 0, 2, 0]
+        posicion 0: 1 vez (101)
+        posicion 2: 2 veces (122, 326)
+        posicion 3: 1 vez (332)
+        posicion 4: 1 vez (349)
+        posicion 6: 1 vez (369)
+        posicion 8: 2 veces (180, 486)
+
+contC = [1, 1, 2, 0, 0, 0, 2, 0, 0, 2]
+        posicion 0: 1 vez (180)
+        posicion 1: 1 vez (101)
+        posicion 2: 2 veces (122, 332)
+        posicion 6: 2 veces (486, 326)
+        posicion 9: 2 veces (369, 349)
+
+CONTADORES ACUMULATIVOS:
+contA = [0, 3, 3, 7, 8, 8, 8, 8, 8, 8]
+contB = [1, 1, 3, 4, 5, 5, 6, 6, 8, 8]
+contC = [1, 2, 4, 4, 4, 4, 6, 6, 6, 8]
+
+PASO 2: ORDENAR POR EXPONENTE c (menos significativo)
+
+Procesamos de derecha a izquierda para mantener estabilidad:
+
+i   numeros[i]   c   contC[c]-1   temp1[posicion]
+7      101       1      2-1=1         temp1[1]
+6      326       6      6-1=5         temp1[5]
+5      349       9      8-1=7         temp1[7]
+4      486       6      5-1=4         temp1[4]
+3      180       0      1-1=0         temp1[0]
+2      332       2      4-1=3         temp1[3]
+1      369       9      7-1=6         temp1[6]
+0      122       2      3-1=2         temp1[2]
+
+RESULTADO temp1:
+temp1 = [180, 101, 122, 332, 486, 326, 369, 349]
+Exponentes: [0, 1, 2, 2, 6, 6, 9, 9] <- ordenado por c
+
+PASO 3: ORDENAR POR CIFRA b (estable)
+
+Recalculamos contB basado en temp1:
+
+Numero   b   Incremento
+180      8   contB[8]++
+101      0   contB[0]++
+122      2   contB[2]++
+332      3   contB[3]++
+486      8   contB[8]++
+326      2   contB[2]++
+369      6   contB[6]++
+349      4   contB[4]++
+
+Nuevo contB = [1, 0, 2, 1, 1, 0, 1, 0, 2, 0]
+Acumulativo = [1, 1, 3, 4, 5, 5, 6, 6, 8, 8]
+
+Procesamos temp1 -> temp2:
+
+i   temp1[i]   b   contB[b]-1   temp2[posicion]
+7      349     4      5-1=4         temp2[4]
+6      369     6      6-1=5         temp2[5]
+5      326     2      3-1=2         temp2[2]
+4      486     8      8-1=7         temp2[7]
+3      332     3      4-1=3         temp2[3]
+2      122     2      2-1=1         temp2[1]
+1      101     0      1-1=0         temp2[0]
+0      180     8      7-1=6         temp2[6]
+
+RESULTADO temp2:
+temp2 = [101, 122, 326, 332, 349, 369, 180, 486]
+Cifras b: [0, 2, 2, 3, 4, 6, 8, 8] <- ordenado por b (estable)
+
+PASO 4: ORDENAR POR CIFRA a (mas significativo)
+
+Recalculamos contA basado en temp2:
+
+Numero   a   Incremento
+101      1   contA[1]++
+122      1   contA[1]++
+326      3   contA[3]++
+332      3   contA[3]++
+349      3   contA[3]++
+369      3   contA[3]++
+180      1   contA[1]++
+486      4   contA[4]++
+
+Nuevo contA = [0, 3, 0, 4, 1, 0, 0, 0, 0, 0]
+Acumulativo = [0, 3, 3, 7, 8, 8, 8, 8, 8, 8]
+
+Procesamos temp2 -> numeros (resultado final):
+
+i   temp2[i]   a   contA[a]-1   numeros[posicion]
+7      486     4      8-1=7         numeros[7]
+6      180     1      3-1=2         numeros[2]
+5      369     3      7-1=6         numeros[6]
+4      349     3      6-1=5         numeros[5]
+3      332     3      5-1=4         numeros[4]
+2      326     3      4-1=3         numeros[3]
+1      122     1      2-1=1         numeros[1]
+0      101     1      1-1=0         numeros[0]
+
+RESULTADO FINAL:
+
+Array ordenado: [101, 122, 180, 326, 332, 349, 369, 486]
+
+En notacion cientifica:
+[1,0*10^1, 1,2*10^2, 1,8*10^0, 3,2*10^6, 3,3*10^2, 3,4*10^9, 3,6*10^9, 4,8*10^6]
+
+Valores decimales ordenados:
+[10, 120, 1.8, 3200000, 330, 3400000000, 3600000000, 4800000]
+
+VERIFICACION DEL ORDENAMIENTO:
+
+El algoritmo ordena lexicograficamente por (a, b, c):
+- Primero por cifra significativa a: 1,1,1,3,3,3,3,4
+- Dentro de cada grupo de a, por cifra b: 
+  para a=1: (0,2,8) -> numeros 101,122,180
+  para a=3: (2,3,4,6) -> numeros 326,332,349,369
+- Dentro de cada subgrupo, por exponente c: todos correctos
+
+ALGORITMO COMPLETADO EXITOSAMENTE
