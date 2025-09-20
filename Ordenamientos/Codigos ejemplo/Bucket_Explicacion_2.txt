@@ -1,0 +1,187 @@
+QUE SON LOS BUCKETS?
+
+===============================================================
+
+Los buckets (cubetas o contenedores) son estructuras de datos temporales que dividen el espacio de valores en rangos mas pequeños para organizar los elementos antes de ordenarlos.
+
+QUE SON EXACTAMENTE?
+
+Un bucket es simplemente un slice/array que contiene elementos que pertenecen a un rango especifico de valores.
+
+|--------------------------------------|
+|buckets := make([][]T, n)             |
+|            ^                         |
+|    Cada posicion es un bucket (slice)|
+|--------------------------------------|
+
+ANALOGIA FISICA
+
+Imagina que tienes 10 cajas numeradas del 0 al 9 y una bolsa con numeros mezclados:
+
+Numeros: [23, 45, 12, 67, 89, 34, 56, 78, 91, 13]
+
+Cajas (buckets):
+[0-19]: [12, 13]           <- Bucket 0
+[20-29]: [23]              <- Bucket 1  
+[30-39]: [34]              <- Bucket 2
+[40-49]: [45]              <- Bucket 3
+[50-59]: [56]              <- Bucket 4
+[60-69]: [67]              <- Bucket 5
+[70-79]: [78]              <- Bucket 6
+[80-89]: [89]              <- Bucket 7
+[90-99]: [91]              <- Bucket 8
+
+COMO FUNCIONAN EN EL CODIGO?
+
+===============================================================
+
+1. CREACION:
+
+|------------------------------|
+|buckets := make([][]T, n)     |
+|------------------------------|
+
+Crea n buckets vacios (uno por cada elemento del array original).
+
+2. DISTRIBUCION:
+
+|---------------------------------------------|
+|index := (key - min) * (n - 1) / range_      |
+|buckets[index] = append(buckets[index], item)|
+|---------------------------------------------|
+
+Calcula a que bucket pertenece cada elemento y lo agrega ahi.
+
+3. ORDENAMIENTO:
+
+|----------------------------------|
+|insertionSort(buckets[i], keyFunc)|
+|----------------------------------|
+
+Ordena cada bucket individualmente.
+
+4. CONCATENACION:
+
+|--------------------------------------|
+|for _, bucket := range buckets {      |
+|    result = append(result, bucket...)|
+|}                                     |
+|--------------------------------------|
+
+Une todos los buckets ordenados en el resultado final.
+
+EJEMPLO VISUAL PASO A PASO
+
+===============================================================
+
+Array original: [78, 17, 39, 26, 72]
+- min = 17, max = 78, range = 61
+
+DISTRIBUCION EN BUCKETS:
+
+Bucket 0: [17]           <- (17-17) * 4 / 61 = 0
+Bucket 1: [26]           <- (26-17) * 4 / 61 = 0.59 ≈ 0 -> 1
+Bucket 2: [39]           <- (39-17) * 4 / 61 = 1.44 ≈ 1 -> 2  
+Bucket 3: [72, 78]       <- (72-17) * 4 / 61 = 3.6 ≈ 3
+Bucket 4: []             <- vacio
+
+DESPUES DE ORDENAR CADA BUCKET:
+
+Bucket 0: [17]
+Bucket 1: [26]  
+Bucket 2: [39]
+Bucket 3: [72, 78]       <- Se ordena internamente
+Bucket 4: []
+
+RESULTADO FINAL: [17, 26, 39, 72, 78]
+
+POR QUE USAR BUCKETS?
+
+===============================================================
+
+1. DIVIDE Y VENCERAS: Problema grande -> muchos problemas pequeños
+2. LOCALIDAD: Elementos similares quedan juntos
+3. EFICIENCIA: Ordenar 10 buckets de 1 elemento cada uno es mas rapido que ordenar 1 array de 10 elementos
+4. PARALIZACION: Cada bucket se puede ordenar independientemente
+
+VENTAJA CLAVE:
+
+Si los datos se distribuyen uniformemente, cada bucket tendra pocos elementos, 
+haciendo que el ordenamiento interno sea muy rapido (insertion sort con pocos elementos es O(1) practicamente).
+
+EJEMPLO DETALLADO DE CALCULO
+
+===============================================================
+
+Para el array [78, 17, 39, 26, 72] con 5 elementos:
+
+PARAMETROS:
+- n = 5 (numero de elementos = numero de buckets)
+- min = 17 (valor minimo)
+- max = 78 (valor maximo)  
+- range = 78 - 17 = 61
+
+CALCULO DE INDICES:
+
+Para 78:
+index = (78 - 17) * (5 - 1) / 61 = 61 * 4 / 61 = 4
+-> Bucket 4
+
+Para 17:
+index = (17 - 17) * (5 - 1) / 61 = 0 * 4 / 61 = 0
+-> Bucket 0
+
+Para 39:
+index = (39 - 17) * (5 - 1) / 61 = 22 * 4 / 61 = 1.44 ≈ 1
+-> Bucket 1
+
+Para 26:
+index = (26 - 17) * (5 - 1) / 61 = 9 * 4 / 61 = 0.59 ≈ 0
+-> Bucket 0
+
+Para 72:
+index = (72 - 17) * (5 - 1) / 61 = 55 * 4 / 61 = 3.6 ≈ 3
+-> Bucket 3
+
+DISTRIBUCION FINAL:
+Bucket 0: [17, 26]
+Bucket 1: [39]
+Bucket 2: []
+Bucket 3: [72]
+Bucket 4: [78]
+
+DESPUES DE ORDENAR CADA BUCKET:
+Bucket 0: [17, 26]       <- insertion sort ordena 17, 26
+Bucket 1: [39]           <- un solo elemento, ya ordenado
+Bucket 2: []             <- vacio
+Bucket 3: [72]           <- un solo elemento, ya ordenado
+Bucket 4: [78]           <- un solo elemento, ya ordenado
+
+RESULTADO CONCATENADO: [17, 26, 39, 72, 78]
+
+TIPOS DE DISTRIBUCION
+
+===============================================================
+
+DISTRIBUCION UNIFORME (CASO IDEAL):
+- Cada bucket tiene aproximadamente el mismo numero de elementos
+- Tiempo de ordenamiento: O(1) por bucket
+- Complejidad total: O(n)
+
+DISTRIBUCION DESIGUAL (CASO PROBLEMATICO):
+- Algunos buckets tienen muchos elementos, otros pocos
+- Un bucket podria tener todos los elementos
+- Complejidad en el peor caso: O(n²)
+
+DISTRIBUCION COMPLETAMENTE DESIGUAL (PEOR CASO):
+- Todos los elementos van al mismo bucket
+- Se convierte en insertion sort normal
+- Complejidad: O(n²)
+
+CONCLUSION
+
+===============================================================
+
+Los buckets son simplemente una forma inteligente de pre-organizar los datos antes de aplicar el ordenamiento final. 
+Funcionan como contenedores temporales que agrupan elementos por rangos de valores, permitiendo que el algoritmo sea muy eficiente 
+cuando los datos estan bien distribuidos.

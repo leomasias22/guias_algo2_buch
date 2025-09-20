@@ -1,0 +1,232 @@
+BUCKET SORT - EXPLICACION PASO A PASO CON COMPLEJIDAD TEMPORAL
+
+==============================================================
+
+QUE ES BUCKET SORT?
+
+Bucket Sort es un algoritmo de ordenamiento que divide los elementos en varios "buckets" (cubetas), 
+ordena cada bucket individualmente, y luego concatena todos los buckets para obtener el resultado final ordenado.
+
+FUNCIONAMIENTO PASO A PASO
+
+==============================================================
+
+PASO 1: Verificar si el array esta vacio o tiene un elemento
+
+|---------------------------|
+|n := len(arr)              |
+|if n <= 1 {                |
+|    return arr             |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(1)
+JUSTIFICACION: Es una verificacion simple de longitud y retorno directo. Operacion constante.
+
+==============================================================
+
+PASO 2: Encontrar el valor minimo y maximo
+
+|---------------------------|
+|min, max := keyFunc(arr[0]), keyFunc(arr[0])|
+|for _, item := range arr { |
+|    key := keyFunc(item)   |
+|    if key < min {         |
+|        min = key          |
+|    }                      |
+|    if key > max {         |
+|        max = key          |
+|    }                      |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION:
+- Recorre todo el array una vez (n elementos)
+- Para cada elemento, llama keyFunc: O(1) por llamada
+- Cada comparacion es O(1)
+- Total: n * (O(1) + O(1) + O(1)) = O(n)
+
+==============================================================
+
+PASO 3: Verificar si todos los elementos son iguales
+
+|---------------------------|
+|if min == max {            |
+|    return arr             |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(1)
+JUSTIFICACION: Es una simple comparacion y retorno. Operacion constante.
+
+==============================================================
+
+PASO 4: Crear los buckets
+
+|---------------------------|
+|buckets := make([][]T, n)  |
+|range_ := max - min        |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION:
+- make([][]T, n) crea un slice de n buckets vacios: O(n)
+- Calculo de range_: O(1)
+- Total: O(n) + O(1) = O(n)
+
+PASO 5: Distribuir elementos en buckets
+
+|-------------------------------------------------|
+|for _, item := range arr {                       |
+|    key := keyFunc(item)                         |
+|    index := (key - min) * (n - 1) / range_      |
+|    if index >= n {                              |
+|        index = n - 1                            |
+|    }                                            |
+|    buckets[index] = append(buckets[index], item)|
+|}                                                |
+|-------------------------------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION:
+- Recorre n elementos una vez
+- Para cada elemento:
+  * keyFunc(item): O(1)
+  * Calculo de index: O(1) (operaciones aritmeticas)
+  * Verificacion de limite: O(1)
+  * append al bucket: O(1) amortizado
+- Total: n * O(1) = O(n)
+
+==============================================================
+
+PASO 6: Ordenar cada bucket individualmente
+
+|--------------------------------------|
+|for i := range buckets {              |
+|    insertionSort(buckets[i], keyFunc)|
+|}                                     |
+|--------------------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n² + n*k) en el peor caso, O(n + k) en promedio
+JUSTIFICACION:
+- Recorre todos los buckets: O(n) buckets
+- Para cada bucket con m elementos:
+  * insertionSort toma O(m²) en el peor caso
+  * insertionSort toma O(m) cuando esta casi ordenado
+- Si todos los elementos van a un bucket: O(n²)
+- Si se distribuyen uniformemente: cada bucket tiene n/n = 1 elemento, total O(n)
+- k = numero de buckets no vacios
+- Caso promedio (distribucion uniforme): O(n)
+
+==============================================================
+
+PASO 7: Concatenar todos los buckets
+
+|--------------------------------------|
+|result := make([]T, 0, n)             |
+|for _, bucket := range buckets {      |
+|    result = append(result, bucket...)|
+|}                                     |
+|--------------------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION:
+- make([]T, 0, n): crear slice con capacidad n = O(1)
+- Recorrer todos los buckets: O(n) buckets en el peor caso
+- Para cada bucket, append todos sus elementos: total n elementos
+- Total: O(n) elementos copiados = O(n)
+
+==============================================================
+
+PASO 8: Retornar resultado
+
+|---------------------------|
+|return result              |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(1)
+JUSTIFICACION: Retorno directo de referencia, operacion constante.
+
+ANALISIS DE INSERTION SORT (FUNCION AUXILIAR)
+
+==============================================================
+
+|---------------------------------------------------------|
+|func insertionSort[T any](arr []T, keyFunc func(T) int) {|
+|    for i := 1; i < len(arr); i++ {                      |
+|        key := arr[i]                                    |
+|        keyValue := keyFunc(key)                         |
+|        j := i - 1                                       |
+|                                                         |
+|        for j >= 0 && keyFunc(arr[j]) > keyValue {       |
+|            arr[j+1] = arr[j]                            |
+|            j--                                          |
+|        }                                                |
+|        arr[j+1] = key                                   |
+|    }                                                    |
+|}                                                        |
+|---------------------------------------------------------|
+
+COMPLEJIDAD TEMPORAL POR BUCKET:
+- Mejor caso (ya ordenado): O(m) donde m = tamaño del bucket
+- Caso promedio: O(m²)
+- Peor caso (orden inverso): O(m²)
+
+JUSTIFICACION:
+- Bucle externo: m-1 iteraciones
+- Bucle interno: en promedio m/2 comparaciones e intercambios
+- Total: (m-1) * (m/2) = O(m²)
+
+ANALISIS DE COMPLEJIDAD TOTAL
+
+==============================================================
+
+COMPLEJIDAD POR PASO:
+- Verificacion inicial: O(1)
+- Encontrar min/max: O(n)
+- Verificar igualdad: O(1)
+- Crear buckets: O(n)
+- Distribuir elementos: O(n)
+- Ordenar buckets: O(n + k) promedio, O(n²) peor caso
+- Concatenar: O(n)
+- Retornar: O(1)
+
+COMPLEJIDAD TOTAL:
+O(1) + O(n) + O(1) + O(n) + O(n) + O(n + k) + O(n) + O(1) = O(n + k)
+
+DONDE:
+- n = numero de elementos en el array
+- k = numero de buckets (en este caso k = n)
+- m = numero promedio de elementos por bucket
+
+CASOS PARTICULARES:
+
+MEJOR CASO: O(n)
+- Los elementos se distribuyen uniformemente en los buckets
+- Cada bucket tiene pocos elementos (idealmente 1)
+- Los buckets estan naturalmente ordenados
+
+CASO PROMEDIO: O(n)
+- Distribucion relativamente uniforme
+- Cada bucket tiene aproximadamente n/k elementos
+- k ≈ n, entonces cada bucket tiene ≈ 1 elemento
+
+PEOR CASO: O(n²)
+- Todos los elementos van al mismo bucket
+- Se convierte esencialmente en insertion sort sobre n elementos
+- Ocurre cuando los datos no estan uniformemente distribuidos
+
+CUANDO ES EFICIENTE BUCKET SORT:
+
+BUENO PARA:
+- Datos uniformemente distribuidos en un rango conocido
+- Cuando el rango de valores es similar al numero de elementos
+- Datos que se pueden mapear facilmente a enteros
+- Cuando se requiere estabilidad (mantenida por insertion sort)
+
+NO RECOMENDADO PARA:
+- Datos con distribucion muy desigual
+- Rango de valores mucho mayor que el numero de elementos
+- Cuando la memoria es muy limitada (usa O(n) espacio extra)
+- Datos donde keyFunc es muy costosa de calcular

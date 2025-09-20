@@ -1,0 +1,175 @@
+COUNTING SORT - EXPLICACION PASO A PASO
+
+===============================================
+
+QUE ES COUNTING SORT?
+
+Counting Sort es un algoritmo de ordenamiento que no utiliza comparaciones. 
+En lugar de comparar elementos, cuenta las ocurrencias de cada valor unico y 
+utiliza esta informacion para colocar los elementos en sus posiciones correctas.
+
+FUNCIONAMIENTO PASO A PASO
+
+===============================================
+PASO 1: Verificar si el array esta vacio
+
+|---------------------------|
+|if len(arr) == 0 {         |
+|    return arr             |
+|}                          |
+|---------------------------|
+Si el array esta vacio, lo devolvemos tal como esta.
+Complejidad: O(1)
+
+===============================================
+PASO 2: Encontrar el valor minimo y maximo
+
+|---------------------------|
+|min, max := arr[0], arr[0] |
+|for _, val := range arr {  |
+|    if val < min {         |
+|        min = val          |
+|    }                      |
+|    if val > max {         |
+|        max = val          |
+|    }                      |
+|}                          |
+|---------------------------|
+Recorremos todo el array para encontrar el valor mas pequeño y el mas grande. Esto nos permite manejar numeros negativos usando un offset.
+
+EJEMPLO: Para el array [4, 2, -1, 8, 3]
+- min = -1
+- max = 8
+
+Complejidad: O(n)
+
+Recorre todo el array una vez (n elementos)
+Cada comparación es O(1)
+Total: n * O(1) = O(n)
+
+===============================================
+
+PASO 3: Calcular el rango y crear array de conteo
+|----------------------------|
+|range_ := max - min + 1     |
+|count := make([]int, range_)|
+|----------------------------|
+Calculamos cuantos valores unicos pueden existir entre min y max (inclusive). Creamos un array de conteo de ese tamaño, inicializado en ceros.
+
+EJEMPLO: range_ = 8 - (-1) + 1 = 10
+count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+Complejidad: O(k) donde k = (max - min + 1)
+
+El cálculo del rango es O(1)
+make() crea un slice de tamaño k e inicializa todos los valores en 0
+Inicializar (el make) k elementos toma O(k) tiempo
+
+===============================================
+
+PASO 4: Contar las ocurrencias de cada 
+
+|---------------------------|
+|for _, val := range arr {  |
+|    count[val-min]++       |
+|}                          |
+|---------------------------|
+Para cada elemento en el array original, incrementamos el contador correspondiente. Usamos val-min como indice para manejar numeros negativos.
+
+EJEMPLO: Para [4, 2, -1, 8, 3]
+- -1 → indice 0: count[0] = 1
+- 2 → indice 3: count[3] = 1  
+- 3 → indice 4: count[4] = 1
+- 4 → indice 5: count[5] = 1
+- 8 → indice 9: count[9] = 1
+
+Resultado: count = [1, 0, 0, 1, 1, 1, 0, 0, 0, 1]
+
+Complejidad: O(n)
+
+Recorre cada elemento del array original (n elementos)
+Cada acceso al array count e incremento es O(1)
+Total: n * O(1) = O(n)Complejidad: O(n)
+
+Recorre cada elemento del array original (n elementos)
+Cada acceso al array count e incremento es O(1)
+Total: n * O(1) = O(n)
+===============================================
+PASO 5: Convertir a posiciones acumulativas
+|-------------------------------|
+|for i := 1; i < range_; i++ {  |
+|    count[i] += count[i-1]     |
+|}                              |
+|-------------------------------|
+Transformamos el array de conteo en un array de posiciones acumulativas. 
+Cada posicion ahora indica cuantos elementos son menores o iguales al valor correspondiente.
+
+EJEMPLO:
+count = [1, 1, 1, 2, 3, 4, 4, 4, 4, 5]
+
+Esto significa:
+- 1 elemento ≤ -1
+- 2 elementos ≤ 2
+- 3 elementos ≤ 3
+- etc.
+
+Complejidad: O(k) donde k = range_
+
+Recorre el array count desde la posición 1 hasta k-1
+Cada operación de suma es O(1)
+Total: (k-1) * O(1) = O(k)
+===============================================
+PASO 6: Construir el array resultado
+|---------------------------------------|
+|result := make([]int, len(arr))        |
+|for i := len(arr) - 1; i >= 0; i-- {   |
+|    index := arr[i] - min              |
+|    count[index]--                     |
+|    result[count[index]] = arr[i]      |
+|}                                      |
+|---------------------------------------|
+Creamos el array resultado y lo llenamos recorriendo el array original desde atras 
+hacia adelante (para mantener la estabilidad). Para cada elemento:
+
+1. Calculamos su indice en el array de conteo
+2. Decrementamos el contador (esto nos da la posicion final)
+3. Colocamos el elemento en esa posicion del resultado
+
+EJEMPLO: Procesando [4, 2, -1, 8, 3] desde atras:
+
+- 3: indice=4, count[4]=3, count[4]-- → count[4]=2, result[2]=3
+- 8: indice=9, count[9]=5, count[9]-- → count[9]=4, result[4]=8  
+- -1: indice=0, count[0]=1, count[0]-- → count[0]=0, result[0]=-1
+- 2: indice=3, count[3]=2, count[3]-- → count[3]=1, result[1]=2
+- 4: indice=5, count[5]=4, count[5]-- → count[5]=3, result[3]=4
+
+Resultado final: [-1, 2, 3, 4, 8]
+
+Complejidad: O(n)
+
+make([]int, len(arr)) crea un array de n elementos: O(n)
+El bucle recorre n elementos: O(n)
+Cada operación dentro del bucle es O(1)
+Total: O(n) + n * O(1) = O(n)
+===============================================
+CARACTERISTICAS DEL ALGORITMO
+===============================================
+
+- Complejidad temporal: O(n + k) donde n es el numero de elementos y k es el rango de valores
+- Estable: Mantiene el orden relativo de elementos iguales
+- No comparativo: No compara elementos directamente
+
+===============================================
+CUANDO USAR COUNTING SORT
+===============================================
+
+BUENO PARA:
+- Rangos de valores pequeños y conocidos
+- Enteros o elementos mapeables a enteros
+- Cuando se requiere estabilidad
+- Grandes cantidades de datos con pocos valores unicos
+
+NO RECOMENDADO PARA:
+- Rangos de valores muy grandes
+- Numeros de punto flotante
+- Cuando el espacio de memoria es limitado

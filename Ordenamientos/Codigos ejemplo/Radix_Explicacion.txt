@@ -1,0 +1,183 @@
+RADIX SORT - EXPLICACION PASO A PASO CON COMPLEJIDAD TEMPORAL
+
+===============================================================
+
+QUE ES RADIX SORT?
+
+Radix Sort es un algoritmo de ordenamiento no comparativo que ordena elementos procesando digito por digito, 
+comenzando desde el digito menos significativo hasta el mas significativo.
+
+FUNCIONAMIENTO PASO A PASO
+
+===============================================================
+
+PASO 1: Verificar si el array esta vacio o tiene un elemento
+
+|---------------------------|
+|if len(arr) <= 1 {         |
+|    return arr             |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(1)
+JUSTIFICACION: Es una verificacion simple de longitud y retorno directo. Operacion constante.
+===============================================================
+PASO 2: Encontrar el valor maximo
+
+|---------------------------|
+|max := arr[0]              |
+|for _, val := range arr {  |
+|    if val > max {         |
+|        max = val          |
+|    }                      |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION: 
+- Recorre todo el array una vez (n elementos)
+- Cada comparacion es O(1)
+- Total: n * O(1) = O(n)
+===============================================================
+PASO 3: Preparar arrays de trabajo
+
+|---------------------------|
+|result := make([]int, len(arr))|
+|copy(result, arr)          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION:
+- make() crea un array de n elementos: O(n)
+- copy() copia n elementos: O(n)
+- Total: O(n) + O(n) = O(n)
+
+PASO 4: Bucle principal por cada digito
+
+|---------------------------|
+|for exp := 1; max/exp > 0; exp *= 10 {|
+|    // Counting sort aqui   |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(d) donde d = numero de digitos
+JUSTIFICACION:
+- El bucle se ejecuta d veces, donde d = floor(log10(max)) + 1
+- Para un numero de k digitos, d = k
+- Por ejemplo: max = 1234 → d = 4 iteraciones
+
+PASO 5A: Crear arrays de conteo (dentro del bucle)
+
+|---------------------------|
+|n := len(result)           |
+|output := make([]int, n)   |
+|count := make([]int, 10)   |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n + k) donde k = 10
+JUSTIFICACION:
+- make([]int, n): crear array de n elementos = O(n)
+- make([]int, 10): crear array de 10 elementos = O(10) = O(k)
+- Total por iteracion: O(n + k) = O(n + 10) = O(n)
+
+PASO 5B: Contar ocurrencias de cada digito
+
+|---------------------------|
+|for i := 0; i < n; i++ {   |
+|    digit := (result[i] / exp) % 10|
+|    count[digit]++         |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION:
+- Recorre n elementos una vez
+- Cada operacion dentro del bucle es O(1):
+  * Division: O(1)
+  * Modulo: O(1)  
+  * Incremento: O(1)
+- Total: n * O(1) = O(n)
+
+PASO 5C: Convertir a posiciones acumulativas
+
+|---------------------------|
+|for i := 1; i < 10; i++ {  |
+|    count[i] += count[i-1] |
+|}                          |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(k) donde k = 10
+JUSTIFICACION:
+- Recorre 9 elementos (de 1 a 9)
+- Cada suma es O(1)
+- Total: 9 * O(1) = O(9) = O(k) = O(1) (constante)
+
+PASO 5D: Construir array resultado
+
+|-----------------------------------|
+|for i := n - 1; i >= 0; i-- {     |
+|    digit := (result[i] / exp) % 10|
+|    output[count[digit]-1] = result[i]|
+|    count[digit]--                 |
+|}                                  |
+|-----------------------------------|
+
+COMPLEJIDAD TEMPORAL: O(n)
+JUSTIFICACION:
+- Recorre n elementos una vez (hacia atras)
+- Cada operacion dentro del bucle es O(1):
+  * Calcular digito: O(1)
+  * Asignacion al array: O(1)
+  * Decremento: O(1)
+- Total: n * O(1) = O(n)
+
+PASO 5E: Actualizar resultado
+
+|---------------------------|
+|result = output            |
+|---------------------------|
+
+COMPLEJIDAD TEMPORAL: O(1)
+JUSTIFICACION: Solo asigna una referencia, no copia elementos.
+
+ANALISIS DE COMPLEJIDAD TOTAL
+
+===============================================================
+
+COMPLEJIDAD POR CADA ITERACION DEL BUCLE PRINCIPAL:
+- Crear arrays: O(n)
+- Contar digitos: O(n)  
+- Posiciones acumulativas: O(k) = O(1)
+- Construir resultado: O(n)
+- Actualizar: O(1)
+- Total por iteracion: O(n) + O(n) + O(1) + O(n) + O(1) = O(n)
+
+COMPLEJIDAD TOTAL:
+- Verificacion inicial: O(1)
+- Encontrar maximo: O(n)
+- Preparar arrays: O(n)
+- Bucle principal: d iteraciones * O(n) por iteracion = O(d * n)
+- Total: O(1) + O(n) + O(n) + O(d * n) = O(d * n)
+
+DONDE:
+- n = numero de elementos en el array
+- d = numero de digitos del numero mas grande = floor(log10(max)) + 1
+- k = base numerica (10 para decimal)
+
+CASOS PARTICULARES:
+
+MEJOR CASO: O(d * n)
+- Todos los numeros tienen la misma cantidad de digitos
+- d es constante y pequeño
+
+CASO PROMEDIO: O(d * n)  
+- d promedio basado en la distribucion de numeros
+
+PEOR CASO: O(d * n)
+- Cuando d es maximo (numero muy grande en el array)
+- Si d crece logaritmicamente con n, se aproxima a O(n log n)
+
+COMPARACION CON OTROS ALGORITMOS:
+- Cuando d es constante y pequeño: Radix Sort es O(n), mejor que O(n log n)
+- Cuando d crece mucho: puede ser peor que algoritmos O(n log n)
+- Ventaja: es estable y no hace comparaciones
