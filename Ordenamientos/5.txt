@@ -1,10 +1,8 @@
 
 # Seguimiento de Counting Sort
 
-
 --------------------## Datos iniciales--------------------
 
-```
 Arreglo original:
 [0] 1988 - Crónicas del Ángel Gris
 [1] 2000 - Los Días del Venado  
@@ -17,11 +15,9 @@ Arreglo original:
 
 n = 8 elementos
 Rango: 1987 a 2005 (k = 19 años)
-```
 
 --------------------## Paso 1: Contar ocurrencias--------------------
 
-```
 Año:      1987 1988 ... 1995 ... 2000 ... 2005
 Contador: [ 1,  1,  ... 3,  ... 1,  ... 2 ]
 
@@ -31,19 +27,14 @@ Desglose:
 - 1995: 3 obras
 - 2000: 1 obra
 - 2005: 2 obras
-```
 
 --------------------## Paso 2: Suma acumulada--------------------
 
-```
 Año:       1987 1988 ... 1995 ... 2000 ... 2005
 Acumulado: [ 1,  2,  ... 5,  ... 6,  ... 8 ]
-```
-
 
 --------------------## Paso 3: Reconstruir (de derecha a izquierda para estabilidad)--------------------
 
-```
 Procesando desde el final:
 
 [7] 2005 → posición 8-1 = 7, acumulado[2005]-- = 7
@@ -54,11 +45,9 @@ Procesando desde el final:
 [2] 1995 → posición 3-1 = 2, acumulado[1995]-- = 2
 [1] 2000 → posición 6-1 = 5, acumulado[2000]-- = 5
 [0] 1988 → posición 2-1 = 1, acumulado[1988]-- = 1
-```
 
 --------------------## Resultado final--------------------
 
-```
 [0] 1987 - Tokio Blues
 [1] 1988 - Crónicas del Ángel Gris
 [2] 1995 - Alta Fidelidad
@@ -67,23 +56,10 @@ Procesando desde el final:
 [5] 2000 - Los Días del Venado
 [6] 2005 - En Picada
 [7] 2005 - Los Hombres que No Amaban a las Mujeres
-```
 
 --------------------## Análisis--------------------
 
-### Orden del algoritmo
-**O(n + k) = O(8 + 19) = O(27)**
+Orden del algoritmo: O(n + k) = O(8 + 19) = O(27)
 
-### Estabilidad
-**El orden relativo SE MANTIENE** para elementos del mismo año:
-
-**Año 1995:**
-- Orden original: Alta Fidelidad → Crónica del Pájaro → Ensayo Sobre la Ceguera
-- Orden final: Alta Fidelidad → Crónica del Pájaro → Ensayo Sobre la Ceguera ✓
-
-**Año 2005:**
-- Orden original: En Picada → Los Hombres que No Amaban
-- Orden final: En Picada → Los Hombres que No Amaban ✓
-
-**Justificación:** Counting Sort es **estable** porque procesa los elementos de derecha a izquierda y
- los coloca en orden inverso de procesamiento, preservando el orden relativo original.
+Justificación: Counting Sort es estable porque procesa los elementos de derecha a izquierda y
+los coloca en orden inverso de procesamiento, preservando el orden relativo original.
