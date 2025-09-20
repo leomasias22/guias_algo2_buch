@@ -1,0 +1,37 @@
+Análisis Verdadero/Falso - Algoritmos de Ordenamiento
+
+------------------a. Podríamos mejorar el orden de complejidad de QuickSort si contáramos con más información sobre cómo son los datos a ordenar.------------
+
+VERDADERO
+
+Justificación: Conocer la distribución de los datos permite optimizar QuickSort de varias maneras:
+- Selección de pivot mejorada: Elegir pivots más cercanos a la mediana real
+- Partición en tres grupos: Cuando hay muchos elementos repetidos, agrupar iguales al pivot
+- Optimización de pivot: Usar promedio de tres elementos para evitar peores casos
+- Ajuste de umbrales: Para cambiar a Insertion Sort en casos pequeños
+
+Estas optimizaciones mejoran el QuickSort original sin cambiar de algoritmo.
+
+----------------------------b. No siempre conviene utilizar Counting Sort para ordenar un arreglo de números enteros.----------------------------
+
+VERDADERO
+
+Justificación: Counting Sort no siempre es la mejor opción:
+- Rango muy grande: Si k >> n, entonces O(n + k) es ineficiente. Ej: ordenar [1, 1000000] → k = 999999
+- Memoria limitada: Requiere O(k) espacio adicional para el contador
+- Números negativos: Necesita mapeo adicional, complicando la implementación
+- Rango desconocido: Si no sabemos el rango, otros algoritmos como Merge Sort O(n log n) son más seguros
+
+----------------------c. Que un algoritmo de ordenamiento sea estable implica que el algoritmo ordena sobre el arreglo original----------------------------
+----------------------(sin utilizar otro adicional). Por ejemplo, Counting Sort no es estable.-------------------------------------------------------------
+
+FALSO
+
+Justificación: La afirmación confunde dos conceptos diferentes:
+- Estable: Mantiene el orden relativo de elementos iguales
+- In-place: Ordena sin usar memoria adicional
+
+Counting Sort ES estable (mantiene orden relativo) pero NO es in-place (usa memoria adicional). 
+La estabilidad no tiene relación con usar o no arreglos adicionales.
+
+Contraejemplos: Selection Sort es in-place pero NO estable. Merge Sort es estable pero NO in-place.

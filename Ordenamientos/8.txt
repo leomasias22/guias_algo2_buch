@@ -1,0 +1,103 @@
+-----------------------Aclaracion---------------------------------
+Si bien en el ejercicio solamente se pide por genero, se podria dar el caso de que ademas pidan por anio, en tal caso
+ya deje el algoritmo correspondiente. notar que si simplemente se ignora ese subalgoritmo el ordenamiento funcionaria perfectamente.
+ALGORITMO OrdenarPeliculasPorGenero(peliculas)
+  // Crear mapa de buckets((mapa en go seria el equivalente a diccionario en python))
+  buckets := mapa[string]lista_peliculas{}
+  
+  // Distribuir películas en buckets
+  para pelicula := rango peliculas hacer
+    si buckets[pelicula.genero] == nil entonces
+      buckets[pelicula.genero] = lista_vacia()
+    fin si
+    buckets[pelicula.genero].append(pelicula)
+  fin para
+  
+  // Obtener géneros como slice y ordenar
+  generos := slice_vacio()
+  para genero := rango buckets hacer
+    generos.append(genero)
+  fin para
+  ordenar_strings(generos)
+  
+  // Ordenar cada bucket por año usando insertion sort
+  para genero := rango generos hacer
+    insertionSort(buckets[genero])
+  fin para
+  
+  // Concatenar buckets en resultado final
+  resultado := slice_vacio()
+  para genero := rango generos hacer
+    resultado.append(buckets[genero]...)
+  fin para
+  
+  retornar resultado
+fin algoritmo
+--------ordenaminto por anio----------
+SUBALGORITMO insertionSort(peliculas)
+  para i := 1 hasta len(peliculas)-1 hacer
+    clave := peliculas[i]
+    j := i - 1
+    mientras j >= 0 Y peliculas[j].año > clave.año hacer
+      peliculas[j+1] = peliculas[j]
+      j = j - 1
+    fin mientras
+    peliculas[j+1] = clave
+  fin para
+fin subalgoritmo
+
+---------------------------Siguimiento-----------------------------------
+
+
+Seguimiento: Bucket Sort + Insertion Sort para Películas por Género
+
+Datos iniciales:
+[0] Donnie Darko (2001): Thriller psicológico
+[1] Juno (2007): Coming of age  
+[2] The Shining (1980): Thriller psicológico
+[3] Labyrinth (1986): Fantasía
+[4] Ferris Bueller's Day Off (1986): Coming of age
+
+n = 5 películas
+
+Paso 1: Distribuir películas en buckets por género
+
+buckets["Thriller psicológico"] = [Donnie Darko (2001), The Shining (1980)]
+buckets["Coming of age"] = [Juno (2007), Ferris Bueller's Day Off (1986)]
+buckets["Fantasía"] = [Labyrinth (1986)]
+
+Paso 2: Ordenar géneros lexicográficamente
+
+Géneros: ["Thriller psicológico", "Coming of age", "Fantasía"]
+Ordenados: ["Coming of age", "Fantasía", "Thriller psicológico"]
+
+Paso 3: Ordenar cada bucket por año (Insertion Sort)
+
+"Coming of age": [Juno (2007), Ferris Bueller's Day Off (1986)]
+→ [Ferris Bueller's Day Off (1986), Juno (2007)]
+
+"Fantasía": [Labyrinth (1986)]
+→ [Labyrinth (1986)] (sin cambios)
+
+"Thriller psicológico": [Donnie Darko (2001), The Shining (1980)]
+→ [The Shining (1980), Donnie Darko (2001)]
+
+Paso 4: Concatenar buckets ordenados
+
+Resultado final(si ordenamos por anio):
+[0] Ferris Bueller's Day Off (1986): Coming of age
+[1] Juno (2007): Coming of age
+[2] Labyrinth (1986): Fantasía
+[3] The Shining (1980): Thriller psicológico
+[4] Donnie Darko (2001): Thriller psicológico
+
+Complejidad: O(n + k) = O(5 + 3) = O(8) ≈ O(n)
+
+Resultado final(si no ordenamos por anio):
+[0] Juno (2007): Coming of age
+[1] Ferris Bueller's Day Off (1986): Coming of age
+[2] Labyrinth (1986): Fantasía  
+[3] Donnie Darko (2001): Thriller psicológico
+[4] The Shining (1980): Thriller psicológico
+
+Complejidad: O(n + k log k) = O(5 + 3 log 3) = O(10) ≈ O(n)

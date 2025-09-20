@@ -1,0 +1,131 @@
+ Seguimiento de Radix Sort - Ordenamiento de Versiones
+
+---------------------------- Datos iniciales----------------------------
+
+Arreglo original:
+[0] "4.3.2"   → (4, 3, 2)
+[1] "5.1.2"   → (5, 1, 2)
+[2] "10.1.4"  → (10, 1, 4)
+[3] "2.1.20"  → (2, 1, 20)
+[4] "2.2.1"   → (2, 2, 1)
+[5] "4.2.3"   → (4, 2, 3)
+[6] "2.1.5"   → (2, 1, 5)
+[7] "8.1.2"   → (8, 1, 2)
+[8] "5.30.1"  → (5, 30, 1)
+[9] "10.0.23" → (10, 0, 23)
+
+n = 10 elementos
+d = 3 dígitos (componentes a.b.c)
+k = 100 (rango: 0-99 por componente)
+
+ Paso 1: Ordenar por componente c (menos significativo)
+
+Aplicando Counting Sort por la tercera componente:
+
+Componente c: [2, 2, 4, 20, 1, 3, 5, 2, 1, 23]
+
+Contador para c:
+1: 2 elementos  ("2.2.1", "5.30.1")
+2: 3 elementos  ("4.3.2", "5.1.2", "8.1.2") 
+3: 1 elemento   ("4.2.3")
+4: 1 elemento   ("10.1.4")
+5: 1 elemento   ("2.1.5")
+20: 1 elemento  ("2.1.20")
+23: 1 elemento  ("10.0.23")
+
+Resultado después de ordenar por c:
+[0] "2.2.1"   → (2, 2, 1)
+[1] "5.30.1"  → (5, 30, 1)
+[2] "4.3.2"   → (4, 3, 2)
+[3] "5.1.2"   → (5, 1, 2)
+[4] "8.1.2"   → (8, 1, 2)
+[5] "4.2.3"   → (4, 2, 3)
+[6] "10.1.4"  → (10, 1, 4)
+[7] "2.1.5"   → (2, 1, 5)
+[8] "2.1.20"  → (2, 1, 20)
+[9] "10.0.23" → (10, 0, 23)
+
+---------------------------- Paso 2: Ordenar por componente b (medio)----------------------------
+
+Aplicando Counting Sort por la segunda componente (manteniendo estabilidad):
+
+Componente b: [2, 30, 3, 1, 1, 2, 1, 1, 1, 0]
+
+Contador para b:
+0: 1 elemento   ("10.0.23")
+1: 5 elementos  ("5.1.2", "8.1.2", "10.1.4", "2.1.5", "2.1.20")
+2: 2 elementos  ("2.2.1", "4.2.3")
+3: 1 elemento   ("4.3.2")
+30: 1 elemento  ("5.30.1")
+
+Resultado después de ordenar por b:
+[0] "10.0.23" → (10, 0, 23)
+[1] "5.1.2"   → (5, 1, 2)
+[2] "8.1.2"   → (8, 1, 2)
+[3] "10.1.4"  → (10, 1, 4)
+[4] "2.1.5"   → (2, 1, 5)
+[5] "2.1.20"  → (2, 1, 20)
+[6] "2.2.1"   → (2, 2, 1)
+[7] "4.2.3"   → (4, 2, 3)
+[8] "4.3.2"   → (4, 3, 2)
+[9] "5.30.1"  → (5, 30, 1)
+
+---------------------------- Paso 3: Ordenar por componente a (más significativo)----------------------------
+
+Aplicando Counting Sort por la primera componente (manteniendo estabilidad):
+
+Componente a: [10, 5, 8, 10, 2, 2, 2, 4, 4, 5]
+
+Contador para a:
+2: 3 elementos  ("2.1.5", "2.1.20", "2.2.1")
+4: 2 elementos  ("4.2.3", "4.3.2")
+5: 2 elementos  ("5.1.2", "5.30.1")
+8: 1 elemento   ("8.1.2")
+10: 2 elementos ("10.0.23", "10.1.4")
+
+Resultado final después de ordenar por a:
+[0] "2.1.5"   → (2, 1, 5)
+[1] "2.1.20"  → (2, 1, 20)
+[2] "2.2.1"   → (2, 2, 1)
+[3] "4.2.3"   → (4, 2, 3)
+[4] "4.3.2"   → (4, 3, 2)
+[5] "5.1.2"   → (5, 1, 2)
+[6] "5.30.1"  → (5, 30, 1)
+[7] "8.1.2"   → (8, 1, 2)
+[8] "10.0.23" → (10, 0, 23)
+[9] "10.1.4"  → (10, 1, 4)
+
+---------------------------- Resultado final----------------------------
+
+Versiones ordenadas:
+[0] "2.1.5"
+[1] "2.1.20"
+[2] "2.2.1"
+[3] "4.2.3"
+[4] "4.3.2"
+[5] "5.1.2"
+[6] "5.30.1"
+[7] "8.1.2"
+[8] "10.0.23"
+[9] "10.1.4"
+
+---------------------------- Análisis----------------------------
+
+ Orden del algoritmo
+O(d × (n + k)) = O(3 × (10 + 100)) = O(330)
+
+Donde:
+- d = 3 (número de componentes)
+- n = 10 (número de versiones)
+- k = 100 (rango de valores por componente: 0-99)
+
+ Verificación del ordenamiento
+Correctamente ordenado según los criterios:
+
+- 2.1.5 < 2.1.20: Mismo a y b, pero 5 < 20 
+- 2.x.x < 4.x.x < 5.x.x < 8.x.x < 10.x.x: Ordenado por primera componente 
+- Dentro de cada a, ordenado por b, luego por c
+
+ Estabilidad
+Radix Sort mantiene la estabilidad porque usa Counting Sort (estable) en cada paso,
+ preservando el orden relativo establecido en pasos anteriores. Esto es crucial para el ordenamiento multi-criterio.
