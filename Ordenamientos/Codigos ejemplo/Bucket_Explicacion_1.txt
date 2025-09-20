@@ -27,18 +27,18 @@ JUSTIFICACION: Es una verificacion simple de longitud y retorno directo. Operaci
 
 PASO 2: Encontrar el valor minimo y maximo
 
-|---------------------------|
+|--------------------------------------------|
 |min, max := keyFunc(arr[0]), keyFunc(arr[0])|
-|for _, item := range arr { |
-|    key := keyFunc(item)   |
-|    if key < min {         |
-|        min = key          |
-|    }                      |
-|    if key > max {         |
-|        max = key          |
-|    }                      |
-|}                          |
-|---------------------------|
+|for _, item := range arr {                  |
+|    key := keyFunc(item)                    |
+|    if key < min {                          |
+|        min = key                           |
+|    }                                       |
+|    if key > max {                          |
+|        max = key                           |
+|    }                                       |
+|}                                           |
+|--------------------------------------------|
 
 COMPLEJIDAD TEMPORAL: O(n)
 JUSTIFICACION:
