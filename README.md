@@ -1,5 +1,9 @@
 # guias_algo2_buch
 
+Este repo se creo en base a esclavizar Claude.ia y ChatGPT, posiblemente haya cosas raras o mal implementadas, abran una pull request o avisen al wss hdps.
+
+---
+
 Cada carpeta corresponde a cada guia, la llamada "principal" en un futuro deberia tener
 varios .go para poder testear correctamente los archivos.
 
@@ -10,5 +14,3 @@ estos solamente son para tener un esquema basico de como podria ser una posible 
 optimizar con dibujos haciendo esto mucho mas simple y rapido
 
 ---
-
-Si hay algun que parezca raro o dudo abrir pull request o mandar mensaje al wss
