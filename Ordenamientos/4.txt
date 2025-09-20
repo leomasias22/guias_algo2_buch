@@ -1,0 +1,34 @@
+----------------------(1) Ordenar por año----------------------
+Algoritmo: Counting Sort
+Justificación:
+
+Los años son números enteros
+El rango de años en la historia de la Tierra es limitado (ej: -4600 millones a 2025)
+Counting Sort es O(n + k) donde k es el rango de años
+Es más eficiente que algoritmos comparativos O(n log n)
+
+----------------------(2) Ordenar por evento (lexicográficamente)----------------------
+Algoritmo: Merge Sort
+Justificación:
+
+Las cadenas requieren comparaciones lexicográficas
+Counting Sort no es aplicable directamente a strings
+Merge Sort es O(n log n) y estable
+Garantiza buen rendimiento en todos los casos
+
+----------------------(3) Ordenar por año y luego por evento----------------------
+Año: Counting Sort (más eficiente para enteros)
+Evento: Merge Sort (necesario para strings)
+
+Características requeridas:
+
+ESTABILIDAD: El algoritmo debe ser estable para mantener el orden relativo de elementos iguales
+
+Orden de aplicación:
+
+Primero ordenar por evento (criterio secundario)
+Después ordenar por año (criterio principal, no es necesario ordenar especificamente anio a anio, ya lo hace counting)
+
+Explicación del orden:
+Al ordenar primero por evento y luego por año con un algoritmo estable, los eventos quedan ordenados lexicográficamente 
+dentro de cada año. Si ordenáramos al revés, el ordenamiento por evento destruiría el orden por año.

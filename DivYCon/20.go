@@ -2,6 +2,7 @@ package divycon
 
 type Joya int
 
+// si bien esta funcion tiene dos for, por enunciado es de tiempo constante, osea O(1)
 func balanza(grupo1, grupo2 []Joya) int {
 	peso1, peso2 := 0, 0
 	for _, j := range grupo1 {
